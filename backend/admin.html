@@ -4,112 +4,223 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pain-to-Page — Admin</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
+    /* ─── Design tokens ─────────────────────────────────────────── */
     :root {
-      --bg:     #0f1117;
-      --panel:  #1a1d27;
-      --border: #2a2d3e;
-      --ink:    #e8eaf0;
-      --muted:  #7a7f99;
-      --accent: #d33f2a;
-      --ok:     #22c55e;
-      --warn:   #f59e0b;
+      --bg:       #0a0a0a;
+      --surface:  #131313;
+      --surface-2:#1a1a1a;
+      --surface-3:#222222;
+      --border:   #242424;
+      --ink:      #ede8df;
+      --muted:    #6b6560;
+      --soft:     #3a3530;
+      --accent:   #e53e2b;
+      --ok:       #4ade80;
+      --warn:     #fbbf24;
+      --err:      #f87171;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ─── Reset ─────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background: var(--bg);
       color: var(--ink);
-      font-family: 'Inter', sans-serif;
-      font-size: 0.95rem;
-      line-height: 1.5;
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: 240px 1fr;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.94rem;
+      line-height: 1.6;
       min-height: 100vh;
     }
 
-    /* Sidebar */
+    /* ─── Layout ─────────────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      min-height: 100vh;
+    }
+
+    /* ─── Sidebar ────────────────────────────────────────────────── */
     .sidebar {
-      background: var(--panel);
+      background: var(--surface);
       border-right: 1px solid var(--border);
-      padding: 24px 16px;
+      padding: 28px 16px 28px;
+      display: flex;
+      flex-direction: column;
     }
 
     .logo {
+      display: block;
+      margin-bottom: 36px;
+      padding: 0 8px;
+    }
+
+    .logo-name {
+      font-family: 'Fraunces', serif;
       font-weight: 700;
-      font-size: 1rem;
-      color: var(--accent);
-      margin-bottom: 32px;
+      font-size: 1.05rem;
+      color: var(--ink);
+      display: block;
+      line-height: 1.2;
+    }
+
+    .logo-name em { font-style: italic; color: var(--accent); }
+
+    .logo-tag {
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      margin-top: 3px;
       display: block;
     }
 
-    .logo em {
-      font-style: normal;
-      color: var(--muted);
-      font-weight: 400;
-      font-size: 0.8rem;
-      display: block;
+    .nav-section {
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--soft);
+      padding: 0 8px;
+      margin-bottom: 6px;
     }
 
     .nav-link {
-      display: block;
-      padding: 8px 12px;
-      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 5px;
       color: var(--muted);
       text-decoration: none;
       font-weight: 500;
+      font-size: 0.88rem;
       margin-bottom: 2px;
       cursor: pointer;
-      transition: background 0.15s, color 0.15s;
+      transition: background 0.12s, color 0.12s;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
     }
 
-    .nav-link:hover, .nav-link.active {
-      background: rgba(255,255,255,0.06);
+    .nav-link:hover {
+      background: rgba(255,255,255,0.05);
       color: var(--ink);
     }
 
-    /* Main */
+    .nav-link.active {
+      background: rgba(229,62,43,0.1);
+      color: var(--ink);
+    }
+
+    .nav-link.active .nav-icon { color: var(--accent); }
+
+    .nav-icon {
+      font-size: 0.9rem;
+      width: 16px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 0 8px;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+
+    .sidebar-footer p {
+      font-size: 0.72rem;
+      color: var(--soft);
+      line-height: 1.5;
+    }
+
+    /* ─── Main content ────────────────────────────────────────────── */
     .main {
-      padding: 32px 40px;
-      max-width: 900px;
+      padding: 36px 44px;
+      max-width: 920px;
     }
 
-    h1 { font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; }
-    h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 16px; }
-    .page-desc { color: var(--muted); margin-bottom: 28px; }
+    .page-header {
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+    }
 
-    .section {
-      background: var(--panel);
+    .page-header h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      font-style: italic;
+      margin-bottom: 4px;
+    }
+
+    .page-desc { color: var(--muted); font-size: 0.9rem; }
+
+    /* ─── Sections / Cards ───────────────────────────────────────── */
+    .card {
+      background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 8px;
       padding: 24px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
+    .card-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ─── Labels & fields ────────────────────────────────────────── */
     label {
       display: block;
-      font-size: 0.8rem;
+      font-size: 0.72rem;
       font-weight: 600;
       color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.8px;
       margin-bottom: 6px;
+    }
+
+    .field { margin-bottom: 16px; }
+    .field:last-child { margin-bottom: 0; }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
     }
 
     input, select, textarea {
       width: 100%;
       background: var(--bg);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 6px;
       padding: 10px 12px;
       color: var(--ink);
-      font: inherit;
+      font-family: 'Outfit', sans-serif;
       font-size: 0.9rem;
       transition: border-color 0.15s;
     }
@@ -119,81 +230,120 @@
       border-color: var(--accent);
     }
 
-    textarea { resize: vertical; min-height: 120px; }
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+      font-size: 0.86rem;
+      line-height: 1.6;
+    }
 
-    .field { margin-bottom: 16px; }
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6560' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 32px;
+    }
 
+    /* ─── Buttons ────────────────────────────────────────────────── */
     .btn {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 10px 18px;
-      border-radius: 8px;
+      padding: 9px 18px;
+      border-radius: 6px;
       border: none;
-      font: inherit;
-      font-size: 0.9rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.88rem;
       font-weight: 600;
       cursor: pointer;
-      transition: opacity 0.15s;
+      transition: all 0.1s ease;
+      white-space: nowrap;
     }
 
-    .btn:hover { opacity: 0.85; }
-    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn:hover { opacity: 0.87; }
+    .btn:active { transform: translateY(1px); }
+    .btn:disabled { opacity: 0.38; cursor: not-allowed; }
+    .btn:disabled:hover { opacity: 0.38; }
 
     .btn-primary {
       background: var(--accent);
       color: #fff;
+      box-shadow: 0 2px 10px rgba(229,62,43,0.25);
+    }
+
+    .btn-primary:hover {
+      opacity: 1;
+      background: #cc3520;
+      box-shadow: 0 3px 14px rgba(229,62,43,0.38);
     }
 
     .btn-ghost {
-      background: rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.05);
       color: var(--ink);
       border: 1px solid var(--border);
     }
 
-    .btn-danger {
-      background: rgba(239, 68, 68, 0.15);
-      color: #f87171;
-      border: 1px solid rgba(239, 68, 68, 0.2);
+    .btn-ghost:hover {
+      opacity: 1;
+      background: rgba(255,255,255,0.08);
+      border-color: #3a3a3a;
     }
 
-    /* Source list */
+    .btn-danger {
+      background: rgba(248,113,113,0.1);
+      color: var(--err);
+      border: 1px solid rgba(248,113,113,0.18);
+    }
+
+    .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+
+    /* ─── Source list ────────────────────────────────────────────── */
     #source-list { margin-bottom: 16px; }
 
     .source-item {
       display: flex;
       align-items: flex-start;
       gap: 12px;
-      background: rgba(255,255,255,0.03);
+      background: var(--surface-2);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 6px;
       padding: 12px 14px;
       margin-bottom: 8px;
+      transition: background 0.1s;
     }
 
+    .source-item:hover { background: var(--surface-3); }
+
     .source-meta { flex: 1; min-width: 0; }
+
     .source-platform {
-      font-size: 0.75rem;
+      font-size: 0.68rem;
       font-weight: 700;
       color: var(--accent);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 1px;
+      margin-bottom: 2px;
     }
+
     .source-url {
-      font-size: 0.8rem;
+      font-size: 0.76rem;
       color: var(--muted);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      margin-bottom: 4px;
     }
+
     .source-preview {
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       color: var(--ink);
-      margin-top: 4px;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      opacity: 0.7;
     }
 
     .remove-btn {
@@ -201,159 +351,323 @@
       border: none;
       color: var(--muted);
       cursor: pointer;
-      font-size: 1.1rem;
-      padding: 2px 4px;
+      font-size: 0.9rem;
+      padding: 2px 5px;
       border-radius: 4px;
+      transition: color 0.1s, background 0.1s;
+      flex-shrink: 0;
+      margin-top: 1px;
     }
-    .remove-btn:hover { color: #f87171; }
 
-    /* Status bar */
+    .remove-btn:hover { color: var(--err); background: rgba(248,113,113,0.08); }
+
+    /* ─── Status bar ─────────────────────────────────────────────── */
     .status-bar {
+      display: none;
+      align-items: center;
+      gap: 10px;
       padding: 10px 14px;
-      border-radius: 8px;
-      font-size: 0.88rem;
+      border-radius: 6px;
+      font-size: 0.86rem;
       font-weight: 500;
       margin-bottom: 16px;
-      display: none;
-    }
-    .status-bar.show { display: block; }
-    .status-bar.ok { background: rgba(34, 197, 94, 0.1); color: var(--ok); border: 1px solid rgba(34, 197, 94, 0.2); }
-    .status-bar.err { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); }
-    .status-bar.loading { background: rgba(245, 158, 11, 0.1); color: var(--warn); border: 1px solid rgba(245, 158, 11, 0.2); }
-
-    /* Funnel preview */
-    .preview-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 16px;
     }
 
-    .preview-card {
-      background: rgba(255,255,255,0.03);
+    .status-bar.show { display: flex; }
+
+    .status-bar.ok {
+      background: rgba(74,222,128,0.08);
+      color: var(--ok);
+      border: 1px solid rgba(74,222,128,0.18);
+    }
+
+    .status-bar.err {
+      background: rgba(248,113,113,0.08);
+      color: var(--err);
+      border: 1px solid rgba(248,113,113,0.18);
+    }
+
+    .status-bar.loading {
+      background: rgba(251,191,36,0.08);
+      color: var(--warn);
+      border: 1px solid rgba(251,191,36,0.18);
+    }
+
+    .spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid currentColor;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.65s linear infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── Preview section ────────────────────────────────────────── */
+    .preview-headline {
+      background: var(--surface-2);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 14px;
+      border-radius: 6px;
+      padding: 18px 20px;
+      margin-bottom: 12px;
     }
 
-    .preview-card .card-label {
-      font-size: 0.72rem;
+    .preview-headline .p-label {
+      font-size: 0.66rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 1.5px;
       color: var(--muted);
       margin-bottom: 8px;
     }
 
-    .preview-card p, .preview-card li {
-      font-size: 0.88rem;
+    .preview-headline .p-head {
+      font-family: 'Fraunces', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      font-style: italic;
       color: var(--ink);
-      line-height: 1.5;
+      margin-bottom: 6px;
+    }
+
+    .preview-headline .p-sub {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .preview-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 14px 16px;
+    }
+
+    .p-label {
+      font-size: 0.66rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .preview-card p {
+      font-size: 0.86rem;
+      color: var(--ink);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .pain-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
     }
 
     .pain-tag {
       display: inline-block;
-      background: rgba(211, 63, 42, 0.12);
+      background: rgba(229,62,43,0.1);
       color: #ff7a6b;
-      border: 1px solid rgba(211, 63, 42, 0.2);
-      border-radius: 6px;
-      padding: 4px 10px;
-      font-size: 0.8rem;
-      margin: 3px 3px 3px 0;
+      border: 1px solid rgba(229,62,43,0.18);
+      border-radius: 4px;
+      padding: 3px 9px;
+      font-size: 0.78rem;
+      font-weight: 500;
     }
 
-    /* Leads table */
-    table {
-      width: 100%;
-      border-collapse: collapse;
+    .features-preview {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
     }
+
+    .feature-preview-item {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 14px;
+    }
+
+    .feature-preview-item strong {
+      display: block;
+      font-size: 0.84rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--ink);
+    }
+
+    .feature-preview-item span {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .preview-note {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+      padding: 10px 0 4px;
+    }
+
+    /* ─── Tab panels ─────────────────────────────────────────────── */
+    .tab-panel         { display: none; }
+    .tab-panel.active  { display: block; }
+
+    /* ─── Leads table ────────────────────────────────────────────── */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    thead tr { border-bottom: 1px solid var(--border); }
 
     th {
       text-align: left;
-      padding: 8px 12px;
-      font-size: 0.75rem;
+      padding: 10px 14px;
+      font-size: 0.68rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 1px;
       color: var(--muted);
-      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+      background: var(--surface-2);
     }
 
     td {
-      padding: 10px 12px;
-      font-size: 0.88rem;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
+      padding: 11px 14px;
+      font-size: 0.86rem;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      vertical-align: middle;
     }
 
-    tr:last-child td { border-bottom: none; }
+    tbody tr:last-child td { border-bottom: none; }
+
+    tbody tr { transition: background 0.1s; }
+    tbody tr:hover td { background: var(--surface-2); }
+
+    .td-num { color: var(--muted); font-variant-numeric: tabular-nums; }
+    .td-date { color: var(--muted); font-size: 0.78rem; white-space: nowrap; }
+    .td-email { font-weight: 500; }
 
     .empty-state {
       text-align: center;
-      padding: 32px;
+      padding: 40px 20px;
       color: var(--muted);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
+    }
+
+    .empty-state .empty-icon {
+      font-size: 1.8rem;
+      display: block;
+      margin-bottom: 10px;
+      opacity: 0.4;
     }
 
     .badge {
-      display: inline-block;
-      padding: 2px 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
       border-radius: 99px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      background: rgba(34, 197, 94, 0.1);
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: rgba(74,222,128,0.1);
       color: var(--ok);
+      vertical-align: middle;
+      margin-left: 6px;
     }
 
-    .tab-row {
+    /* ─── Table section header ───────────────────────────────────── */
+    .section-header {
       display: flex;
-      gap: 4px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .section-header h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      font-style: italic;
+    }
+
+    /* ─── Generate button row ────────────────────────────────────── */
+    .generate-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
       margin-bottom: 24px;
     }
 
-    .tab {
-      padding: 8px 16px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: none;
-      color: var(--muted);
-      font: inherit;
-      font-size: 0.88rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.15s;
+    /* ─── Responsive ─────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .main    { padding: 24px 20px; }
+      .preview-grid { grid-template-columns: 1fr; }
+      .features-preview { grid-template-columns: 1fr; }
+      .field-row { grid-template-columns: 1fr; }
     }
-
-    .tab.active {
-      background: var(--accent);
-      color: #fff;
-      border-color: var(--accent);
-    }
-
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
   </style>
 </head>
 <body>
   <div class="layout">
+
     <!-- Sidebar -->
     <aside class="sidebar">
-      <span class="logo">Pain-to-Page <em>Admin</em></span>
-      <a class="nav-link active" onclick="showTab('generate')">Generate Funnel</a>
-      <a class="nav-link" onclick="showTab('leads')">Leads</a>
+      <a class="logo" href="#">
+        <span class="logo-name">Pain-to-<em>Page</em></span>
+        <span class="logo-tag">Admin Console</span>
+      </a>
+
+      <div class="nav-section" style="margin-bottom:10px;">Workspace</div>
+      <button class="nav-link active" onclick="showTab('generate', event)">
+        <span class="nav-icon">✦</span>
+        Generate Funnel
+      </button>
+      <button class="nav-link" onclick="showTab('leads', event)">
+        <span class="nav-icon">◈</span>
+        Leads
+      </button>
+
+      <div class="sidebar-footer">
+        <p>Pain-to-Page · Early Beta<br>Private admin access</p>
+      </div>
     </aside>
 
     <!-- Main -->
     <main class="main">
-      <h1>Pain-to-Page Admin</h1>
-      <p class="page-desc">Paste social media content → generate funnel copy → collect leads.</p>
 
-      <!-- Generate tab -->
+      <!-- ── Generate tab ──────────────────────────────────────── -->
       <div class="tab-panel active" id="tab-generate">
 
+        <div class="page-header">
+          <h1>Generate Funnel Copy</h1>
+          <p class="page-desc">Paste social media content → extract pain points → generate landing page copy.</p>
+        </div>
+
         <!-- Add Source -->
-        <div class="section">
-          <h2>Add Social Media Source</h2>
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
+        <div class="card">
+          <div class="card-title">Add Social Media Source</div>
+
+          <div class="field-row">
             <div class="field" style="margin:0">
               <label>Platform</label>
               <select id="src-platform">
@@ -365,56 +679,73 @@
               </select>
             </div>
             <div class="field" style="margin:0">
-              <label>URL (optional)</label>
+              <label>URL <span style="text-transform:none; letter-spacing:0; font-weight:400;">(optional)</span></label>
               <input id="src-url" type="url" placeholder="https://...">
             </div>
           </div>
+
           <div class="field">
             <label>Paste content — comments, captions, posts, replies</label>
-            <textarea id="src-text" placeholder="Paste the text from the page here. Longer = better results."></textarea>
+            <textarea id="src-text" placeholder="Paste the raw text here. More content = better results. Comments sections, captions, replies — all welcome."></textarea>
           </div>
+
           <button class="btn btn-ghost" onclick="addSource()">+ Add Source</button>
         </div>
 
-        <!-- Source list -->
+        <!-- Source list (populated by JS) -->
         <div id="source-list"></div>
 
-        <!-- Generate button + status -->
-        <div id="generate-status" class="status-bar"></div>
-        <button class="btn btn-primary" id="generate-btn" onclick="generateFunnel()" style="margin-bottom:24px;">
-          ✦ Generate Funnel Copy
-        </button>
+        <!-- Generate row -->
+        <div class="generate-row">
+          <button class="btn btn-primary" id="generate-btn" onclick="generateFunnel()">
+            ✦ Generate Funnel Copy
+          </button>
+          <div id="generate-status" class="status-bar"></div>
+        </div>
 
-        <!-- Funnel preview -->
-        <div class="section" id="preview-section" style="display:none;">
-          <h2>Generated Funnel</h2>
+        <!-- Preview section -->
+        <div class="card" id="preview-section" style="display:none;">
+          <div class="card-title">Generated Funnel</div>
           <div id="funnel-preview"></div>
         </div>
+
       </div>
 
-      <!-- Leads tab -->
+      <!-- ── Leads tab ─────────────────────────────────────────── -->
       <div class="tab-panel" id="tab-leads">
-        <div class="section">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-            <h2 style="margin:0;">Leads <span class="badge" id="lead-count">—</span></h2>
-            <button class="btn btn-ghost" onclick="loadLeads()">↻ Refresh</button>
-          </div>
+
+        <div class="page-header">
+          <h1>Leads</h1>
+          <p class="page-desc">Beta waitlist signups collected from the public funnel page.</p>
+        </div>
+
+        <div class="section-header">
+          <h2>All Leads <span class="badge" id="lead-count">—</span></h2>
+          <button class="btn btn-ghost btn-sm" onclick="loadLeads()">↻ Refresh</button>
+        </div>
+
+        <div class="table-wrap">
           <div id="leads-table-wrap">
-            <div class="empty-state">Loading leads…</div>
+            <div class="empty-state">
+              <span class="empty-icon">◈</span>
+              Loading leads…
+            </div>
           </div>
         </div>
+
       </div>
+
     </main>
   </div>
 
   <script>
     const sources = [];
 
-    function showTab(name) {
+    function showTab(name, event) {
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
       document.getElementById('tab-' + name).classList.add('active');
-      event.target.classList.add('active');
+      if (event && event.currentTarget) event.currentTarget.classList.add('active');
       if (name === 'leads') loadLeads();
     }
 
@@ -442,11 +773,11 @@
       el.innerHTML = sources.map((s, i) => `
         <div class="source-item">
           <div class="source-meta">
-            <div class="source-platform">${s.platform}</div>
-            ${s.url ? `<div class="source-url">${s.url}</div>` : ''}
+            <div class="source-platform">${escHtml(s.platform)}</div>
+            ${s.url ? `<div class="source-url">${escHtml(s.url)}</div>` : ''}
             <div class="source-preview">${escHtml(s.text)}</div>
           </div>
-          <button class="remove-btn" onclick="removeSource(${i})">✕</button>
+          <button class="remove-btn" onclick="removeSource(${i})" title="Remove">✕</button>
         </div>
       `).join('');
     }
@@ -454,24 +785,24 @@
     async function generateFunnel() {
       if (!sources.length) { alert('Add at least one source first.'); return; }
 
-      const btn = document.getElementById('generate-btn');
+      const btn    = document.getElementById('generate-btn');
       const status = document.getElementById('generate-status');
       btn.disabled = true;
-      showStatus(status, 'loading', '⏳ Analyzing content with Claude… this takes ~10 seconds');
+      showStatus(status, 'loading', 'Analyzing content with Claude…');
 
       try {
         const res = await fetch('/api/analyze', {
-          method: 'POST',
+          method:  'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ sources }),
+          body:    JSON.stringify({ sources }),
         });
 
         if (!res.ok) throw new Error(await res.text());
         const data = await res.json();
-        showStatus(status, 'ok', '✓ Funnel generated successfully!');
+        showStatus(status, 'ok', '✓ Funnel generated — public page updated.');
         renderPreview(data);
       } catch (err) {
-        showStatus(status, 'err', '✕ Error: ' + err.message);
+        showStatus(status, 'err', '✕ ' + (err.message || 'Generation failed'));
       } finally {
         btn.disabled = false;
       }
@@ -482,59 +813,64 @@
       const preview = document.getElementById('funnel-preview');
       section.style.display = 'block';
 
+      const featureHtml = (d.features || []).map(f => `
+        <div class="feature-preview-item">
+          <strong>${escHtml(f.title)}</strong>
+          <span>${escHtml(f.description)}</span>
+        </div>
+      `).join('');
+
       preview.innerHTML = `
+        <div class="preview-headline">
+          <div class="p-label">Headline</div>
+          <div class="p-head">${escHtml(d.headline)}</div>
+          <div class="p-sub">${escHtml(d.subheadline)}</div>
+        </div>
+
         <div class="preview-grid">
-          <div class="preview-card" style="grid-column:1/-1">
-            <div class="card-label">Headline</div>
-            <p style="font-size:1.1rem; font-weight:700;">${escHtml(d.headline)}</p>
-            <p style="color:var(--muted); margin-top:6px;">${escHtml(d.subheadline)}</p>
+          <div class="preview-card">
+            <div class="p-label">Pain Points</div>
+            <div class="pain-tags">
+              ${(d.pain_points || []).map(p => `<span class="pain-tag">${escHtml(p)}</span>`).join('')}
+            </div>
           </div>
           <div class="preview-card">
-            <div class="card-label">Pain Points Extracted</div>
-            <div>${d.pain_points.map(p => `<span class="pain-tag">${escHtml(p)}</span>`).join('')}</div>
+            <div class="p-label">Call to Action</div>
+            <p style="font-weight:700; color:var(--accent); margin-bottom:4px;">${escHtml(d.cta)}</p>
+            <p style="color:var(--muted); font-size:0.8rem;">${escHtml(d.cta_subtext)}</p>
           </div>
           <div class="preview-card">
-            <div class="card-label">CTA</div>
-            <p style="font-weight:700; color:var(--accent);">${escHtml(d.cta)}</p>
-            <p style="color:var(--muted); font-size:0.82rem; margin-top:4px;">${escHtml(d.cta_subtext)}</p>
-          </div>
-          <div class="preview-card">
-            <div class="card-label">Problem</div>
+            <div class="p-label">Problem</div>
             <p>${escHtml(d.problem_section)}</p>
           </div>
           <div class="preview-card">
-            <div class="card-label">Solution</div>
+            <div class="p-label">Solution</div>
             <p>${escHtml(d.solution_section)}</p>
           </div>
-          <div class="preview-card" style="grid-column:1/-1">
-            <div class="card-label">Features</div>
-            <ul style="list-style:none; padding:0; display:grid; grid-template-columns:repeat(3,1fr); gap:10px;">
-              ${d.features.map(f => `
-                <li style="background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:8px; padding:10px;">
-                  <strong style="display:block; margin-bottom:4px;">${escHtml(f.title)}</strong>
-                  ${escHtml(f.description)}
-                </li>
-              `).join('')}
-            </ul>
-          </div>
         </div>
-        <p style="color:var(--muted); font-size:0.82rem;">
-          The public funnel page will now show this content automatically.
-        </p>
+
+        ${featureHtml ? `
+          <div class="p-label" style="margin-bottom:8px;">Features</div>
+          <div class="features-preview">${featureHtml}</div>
+        ` : ''}
+
+        <p class="preview-note">The public funnel page will reflect this content automatically.</p>
       `;
 
-      section.scrollIntoView({ behavior: 'smooth' });
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     async function loadLeads() {
       const wrap = document.getElementById('leads-table-wrap');
+      wrap.innerHTML = `<div class="empty-state"><span class="empty-icon">◈</span>Loading…</div>`;
+
       try {
-        const res = await fetch('/api/leads');
+        const res   = await fetch('/api/leads');
         const leads = await res.json();
         document.getElementById('lead-count').textContent = leads.length;
 
         if (!leads.length) {
-          wrap.innerHTML = '<div class="empty-state">No leads yet. Share your funnel page to collect them.</div>';
+          wrap.innerHTML = `<div class="empty-state"><span class="empty-icon">◈</span>No leads yet. Share your funnel page to collect them.</div>`;
           return;
         }
 
@@ -553,25 +889,26 @@
             <tbody>
               ${leads.map((l, i) => `
                 <tr>
-                  <td style="color:var(--muted)">${i + 1}</td>
-                  <td>${escHtml(l.email)}</td>
-                  <td>${escHtml(l.name || '—')}</td>
-                  <td>${escHtml(l.role || '—')}</td>
+                  <td class="td-num">${i + 1}</td>
+                  <td class="td-email">${escHtml(l.email)}</td>
+                  <td>${escHtml(l.name  || '—')}</td>
+                  <td>${escHtml(l.role  || '—')}</td>
                   <td>${escHtml(l.niche || '—')}</td>
-                  <td style="color:var(--muted); font-size:0.8rem;">${new Date(l.created_at).toLocaleDateString()}</td>
+                  <td class="td-date">${new Date(l.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
                 </tr>
               `).join('')}
             </tbody>
           </table>
         `;
       } catch (err) {
-        wrap.innerHTML = `<div class="empty-state">Failed to load leads: ${err.message}</div>`;
+        wrap.innerHTML = `<div class="empty-state"><span class="empty-icon">✕</span>Failed to load: ${escHtml(err.message)}</div>`;
       }
     }
 
     function showStatus(el, type, msg) {
       el.className = 'status-bar show ' + type;
-      el.textContent = msg;
+      const spinner = type === 'loading' ? '<div class="spinner"></div>' : '';
+      el.innerHTML  = spinner + escHtml(msg);
     }
 
     function escHtml(str) {
@@ -583,7 +920,7 @@
         .replace(/"/g, '&quot;');
     }
 
-    // Load existing funnel on mount
+    // Load existing funnel data on mount to show in preview
     fetch('/api/funnel')
       .then(r => r.json())
       .then(d => { if (d) renderPreview(d); })

@@ -8,51 +8,67 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* ─── Design tokens ────────────────────────────────────────── */
+    /* ─── Design tokens ─────────────────────────────────────────── */
     :root {
-      --bg:      #f4f6f8;
-      --panel:   #ffffff;
-      --ink:     #0f1720;
-      --muted:   #546273;
-      --soft:    #8fa0b0;
-      --accent:  #d33f2a;
-      --accent2: #ff8a3d;
-      --line:    #d8dee5;
-      --ok:      #0a7a4f;
-      --radius:  18px;
-      --shadow:  0 20px 48px rgba(15,23,32,0.08);
+      --bg:          #0b0b0b;
+      --surface:     #141414;
+      --surface-2:   #1c1c1c;
+      --ink:         #ede8df;
+      --muted:       #857f76;
+      --soft:        #4a4540;
+      --accent:      #e53e2b;
+      --accent-dim:  rgba(229,62,43,0.1);
+      --line:        #232323;
+      --ok:          #4ade80;
+      --cta-bg:      #f0ebe0;
+      --cta-ink:     #0e0e0e;
     }
 
-    /* ─── Reset ────────────────────────────────────────────────── */
+    /* ─── Reset ─────────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
-      font-family: 'Inter', "Avenir Next", "Segoe UI", sans-serif;
+      font-family: 'Outfit', sans-serif;
       font-size: 1rem;
-      line-height: 1.55;
+      line-height: 1.6;
       color: var(--ink);
-      background:
-        radial-gradient(900px 600px at -5% -10%, #ffe8d4 0%, rgba(255,232,212,0) 65%),
-        radial-gradient(900px 600px at 110% 10%, #ffd7d0 0%, rgba(255,215,208,0) 60%),
-        var(--bg);
+      background-color: var(--bg);
+      background-image: radial-gradient(rgba(255,255,255,0.022) 1px, transparent 1px);
+      background-size: 28px 28px;
+      overflow-x: hidden;
     }
 
-    .wrap {
-      width: min(1020px, 92vw);
-      margin: 0 auto;
+    /* ─── Scroll progress ────────────────────────────────────────── */
+    #scroll-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      background: var(--accent);
+      z-index: 500;
+      width: 0%;
+      pointer-events: none;
+      transition: width 0.06s linear;
     }
 
-    /* ─── Nav ──────────────────────────────────────────────────── */
+    /* ─── Layout ─────────────────────────────────────────────────── */
+    .wrap { width: min(1040px, 92vw); margin: 0 auto; }
+
+    /* ─── Typography base ────────────────────────────────────────── */
+    h1, h2 { font-family: 'Fraunces', serif; margin: 0; }
+    h3      { font-family: 'Outfit', sans-serif; margin: 0; }
+
+    /* ─── Nav ────────────────────────────────────────────────────── */
     nav {
       position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(244,246,248,0.85);
-      backdrop-filter: blur(12px);
+      top: 0; z-index: 200;
+      background: rgba(11,11,11,0.90);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--line);
     }
 
@@ -60,80 +76,90 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 0;
+      padding: 15px 0;
     }
 
     .brand {
-      font-weight: 800;
-      font-size: 1rem;
-      letter-spacing: -0.3px;
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 1.05rem;
       color: var(--ink);
+      text-decoration: none;
     }
+    .brand em { font-style: italic; color: var(--accent); }
 
-    .brand em {
-      font-style: normal;
-      color: var(--accent);
-    }
-
-    /* ─── Buttons ──────────────────────────────────────────────── */
+    /* ─── Buttons ────────────────────────────────────────────────── */
     .btn {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 11px 20px;
-      border-radius: 12px;
+      padding: 10px 22px;
+      border-radius: 6px;
       border: none;
-      font: inherit;
-      font-size: 0.95rem;
-      font-weight: 700;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
       cursor: pointer;
       text-decoration: none;
-      transition: transform 0.08s ease, box-shadow 0.15s ease;
+      transition: all 0.1s ease;
       white-space: nowrap;
     }
-
     .btn:active { transform: translateY(1px); }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      background: var(--accent);
       color: #fff;
-      box-shadow: 0 8px 22px rgba(211,63,42,0.28);
+      box-shadow: 0 2px 14px rgba(229,62,43,0.3);
     }
-
-    .btn-primary:hover { box-shadow: 0 12px 28px rgba(211,63,42,0.36); }
+    .btn-primary:hover {
+      background: #cc3520;
+      box-shadow: 0 4px 20px rgba(229,62,43,0.44);
+    }
 
     .btn-ghost {
-      background: var(--panel);
-      color: var(--ink);
+      background: transparent;
+      color: var(--muted);
       border: 1px solid var(--line);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
     }
+    .btn-ghost:hover { border-color: #3a3a3a; color: var(--ink); }
 
-    .btn-sm { padding: 8px 16px; font-size: 0.88rem; }
+    .btn-sm { padding: 8px 16px; font-size: 0.84rem; }
 
-    /* ─── Hero ─────────────────────────────────────────────────── */
+    /* ─── Hero ───────────────────────────────────────────────────── */
     .hero {
-      padding: 80px 0 60px;
+      padding: 96px 0 80px;
+      position: relative;
+      overflow: hidden;
     }
+
+    .hero-glow {
+      position: absolute;
+      top: -140px; right: -180px;
+      width: 680px; height: 680px;
+      background: radial-gradient(circle at center, rgba(229,62,43,0.055) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 1; }
 
     .hero-eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 14px;
+      padding: 5px 14px;
       border-radius: 99px;
-      background: rgba(211,63,42,0.08);
-      border: 1px solid rgba(211,63,42,0.18);
-      font-size: 0.82rem;
+      background: var(--accent-dim);
+      border: 1px solid rgba(229,62,43,0.22);
+      font-size: 0.7rem;
       font-weight: 700;
       color: var(--accent);
-      margin-bottom: 20px;
+      margin-bottom: 28px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 1.4px;
     }
 
     .hero-eyebrow .dot {
-      width: 6px; height: 6px;
+      width: 5px; height: 5px;
       border-radius: 50%;
       background: var(--accent);
       animation: pulse 1.8s ease-in-out infinite;
@@ -141,331 +167,329 @@
 
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
+      50%       { opacity: 0.3; transform: scale(0.6); }
     }
 
     h1 {
-      margin: 0 0 16px;
-      font-size: clamp(2.2rem, 5.5vw, 3.8rem);
-      font-weight: 900;
+      font-size: clamp(2.6rem, 6vw, 4.8rem);
+      font-weight: 800;
+      font-style: italic;
       line-height: 1.06;
       letter-spacing: -1.5px;
-      max-width: 18ch;
+      max-width: 15ch;
+      margin-bottom: 24px;
     }
 
     .hero-sub {
-      margin: 0 0 32px;
-      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      margin: 0 0 36px;
+      font-size: clamp(1rem, 1.9vw, 1.15rem);
       color: var(--muted);
-      max-width: 56ch;
-      line-height: 1.6;
+      max-width: 48ch;
+      line-height: 1.75;
     }
 
     .hero-actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
-    .hero-note {
-      font-size: 0.85rem;
-      color: var(--soft);
+    .hero-note { font-size: 0.8rem; color: var(--soft); margin: 0; }
+
+    /* ─── Ticker ─────────────────────────────────────────────────── */
+    .ticker {
+      overflow: hidden;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 13px 0;
+      background: var(--surface);
     }
 
-    /* ─── Section basics ───────────────────────────────────────── */
-    .section {
-      padding: 64px 0;
+    .ticker-track {
+      display: flex;
+      width: max-content;
+      animation: ticker-scroll 32s linear infinite;
     }
+    .ticker-track:hover { animation-play-state: paused; }
+
+    @keyframes ticker-scroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .ticker-item {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 28px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-style: italic;
+      white-space: nowrap;
+      font-family: 'Fraunces', serif;
+      font-weight: 300;
+    }
+    .ticker-item::after {
+      content: '◆';
+      margin-left: 28px;
+      font-size: 0.42rem;
+      color: var(--accent);
+      font-style: normal;
+      vertical-align: middle;
+    }
+
+    /* ─── Section basics ─────────────────────────────────────────── */
+    .section { padding: 80px 0; }
 
     .section-label {
       display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.66rem;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
+      letter-spacing: 2.5px;
       color: var(--accent);
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .section-title {
-      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
-      font-weight: 800;
+      font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+      font-weight: 700;
+      font-style: italic;
       letter-spacing: -0.5px;
       margin: 0 0 12px;
-      line-height: 1.2;
+      line-height: 1.15;
     }
 
     .section-sub {
       color: var(--muted);
-      max-width: 56ch;
-      font-size: 1.05rem;
-      margin: 0 0 40px;
+      max-width: 50ch;
+      font-size: 0.97rem;
+      margin: 0 0 44px;
+      line-height: 1.75;
     }
 
-    /* ─── Divider ──────────────────────────────────────────────── */
-    .divider {
-      height: 1px;
-      background: var(--line);
-      margin: 0;
-    }
+    /* ─── Divider ────────────────────────────────────────────────── */
+    .divider { height: 1px; background: var(--line); }
 
-    /* ─── Pain points ──────────────────────────────────────────── */
-    .pain-grid {
+    /* ─── Seamless cell-grid wrapper ─────────────────────────────── */
+    /*     Cards sit inside; gap color shows through as hairline      */
+    .grid-wrap {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px;
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
     }
+
+    /* ─── Pain points ────────────────────────────────────────────── */
+    .pain-grid { grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); }
 
     .pain-card {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 20px 22px;
-      box-shadow: var(--shadow);
-      position: relative;
+      background: var(--surface);
+      padding: 26px 28px;
+      transition: background 0.15s;
     }
-
-    .pain-card::before {
-      content: '"';
-      position: absolute;
-      top: 12px;
-      left: 18px;
-      font-size: 2.4rem;
-      font-weight: 900;
-      color: rgba(211,63,42,0.15);
-      line-height: 1;
-      font-family: Georgia, serif;
-    }
+    .pain-card:hover { background: var(--surface-2); }
 
     .pain-card p {
       margin: 0;
-      font-size: 0.95rem;
+      font-size: 0.96rem;
       color: var(--ink);
-      line-height: 1.55;
-      padding-top: 20px;
+      line-height: 1.7;
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 300;
+    }
+    .pain-card p::before {
+      content: '"';
+      color: var(--accent);
+      font-size: 1.5rem;
+      line-height: 0;
+      vertical-align: -0.32em;
+      margin-right: 2px;
+      opacity: 0.75;
     }
 
-    /* ─── How it works ─────────────────────────────────────────── */
+    /* ─── How it works ───────────────────────────────────────────── */
     .steps {
       list-style: none;
-      padding: 0;
-      margin: 0;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 20px;
+      padding: 0; margin: 0;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
 
     .steps li {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 24px 22px 22px;
-      box-shadow: var(--shadow);
-      position: relative;
+      background: var(--surface);
+      padding: 32px 28px;
+      transition: background 0.15s;
     }
+    .steps li:hover { background: var(--surface-2); }
 
     .step-num {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px; height: 32px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: #fff;
-      font-size: 0.85rem;
-      font-weight: 800;
+      font-family: 'Fraunces', serif;
+      font-size: 2.8rem;
+      font-weight: 900;
+      font-style: italic;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 18px;
+    }
+
+    .steps li h3 { font-size: 1rem; font-weight: 600; margin: 0 0 8px; }
+    .steps li p  { margin: 0; font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+
+    /* ─── Split (Problem/Solution & Audience) ────────────────────── */
+    .split { grid-template-columns: 1fr; }
+    @media (min-width: 720px) { .split { grid-template-columns: 1fr 1fr; } }
+
+    .split-card {
+      background: var(--surface);
+      padding: 36px 32px;
+      transition: background 0.15s;
+    }
+    .split-card:hover { background: var(--surface-2); }
+
+    .split-card.problem { border-top: 2px solid var(--accent); }
+
+    .split-card .card-label {
+      font-size: 0.64rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--soft);
       margin-bottom: 12px;
     }
 
-    .steps li h3 {
-      margin: 0 0 6px;
-      font-size: 1rem;
-      font-weight: 700;
-    }
-
-    .steps li p {
-      margin: 0;
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-
-    /* ─── Problem / Solution ───────────────────────────────────── */
-    .split {
-      display: grid;
-      gap: 20px;
-    }
-
-    @media (min-width: 720px) {
-      .split { grid-template-columns: 1fr 1fr; }
-    }
-
-    .split-card {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 28px 26px;
-      box-shadow: var(--shadow);
-    }
-
-    .split-card .card-label {
-      font-size: 0.73rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      color: var(--soft);
-      margin-bottom: 10px;
-    }
-
     .split-card h3 {
+      font-family: 'Fraunces', serif;
       font-size: 1.15rem;
+      font-style: italic;
       font-weight: 700;
-      margin: 0 0 10px;
+      margin: 0 0 12px;
     }
 
-    .split-card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.95rem;
-      line-height: 1.65;
-    }
+    .split-card p { margin: 0; color: var(--muted); font-size: 0.92rem; line-height: 1.72; }
 
-    /* ─── Features ─────────────────────────────────────────────── */
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
-    }
+    /* ─── Features ───────────────────────────────────────────────── */
+    .feature-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 
     .feature-card {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 24px 22px;
-      box-shadow: var(--shadow);
+      background: var(--surface);
+      padding: 30px 28px;
+      transition: background 0.15s;
+    }
+    .feature-card:hover { background: var(--surface-2); }
+
+    .feature-icon { font-size: 1.5rem; margin-bottom: 14px; display: block; }
+
+    .feature-card h3 { font-size: 0.98rem; font-weight: 600; margin: 0 0 8px; }
+    .feature-card p  { margin: 0; font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+
+    /* ─── CTA band — LIGHT SECTION ───────────────────────────────── */
+    .cta-band {
+      background: var(--cta-bg);
+      color: var(--cta-ink);
+      padding: 88px 0;
     }
 
-    .feature-icon {
-      width: 40px; height: 40px;
-      border-radius: 12px;
-      background: rgba(211,63,42,0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      margin-bottom: 14px;
-    }
-
-    .feature-card h3 {
-      font-size: 1rem;
-      font-weight: 700;
-      margin: 0 0 8px;
-    }
-
-    .feature-card p {
-      margin: 0;
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    /* ─── CTA / Waitlist ───────────────────────────────────────── */
-    .cta-section {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: clamp(32px, 5vw, 52px);
-      box-shadow: var(--shadow);
-      margin-bottom: 64px;
-    }
-
-    .cta-section h2 {
-      font-size: clamp(1.5rem, 3.5vw, 2rem);
+    .cta-band h2 {
+      font-size: clamp(1.7rem, 3.8vw, 2.6rem);
       font-weight: 800;
-      letter-spacing: -0.4px;
-      margin: 0 0 8px;
+      font-style: italic;
+      letter-spacing: -1px;
+      margin: 0 0 10px;
+      color: var(--cta-ink);
     }
 
-    .cta-section .cta-desc {
-      color: var(--muted);
-      margin: 0 0 28px;
-    }
+    .cta-desc { color: #6b6460; margin: 0 0 32px; font-size: 0.97rem; }
 
+    /* ─── Form ───────────────────────────────────────────────────── */
     .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
       margin-bottom: 10px;
     }
-
-    @media (max-width: 540px) {
-      .form-row { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 540px) { .form-row { grid-template-columns: 1fr; } }
 
     input[type="text"],
     input[type="email"] {
       width: 100%;
-      padding: 12px 14px;
-      border-radius: 12px;
+      padding: 12px 15px;
+      border-radius: 6px;
       border: 1.5px solid var(--line);
-      font: inherit;
-      font-size: 0.95rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.93rem;
       color: var(--ink);
-      background: var(--bg);
+      background: var(--surface);
       transition: border-color 0.15s;
     }
+    input:focus { outline: none; border-color: var(--accent); }
 
-    input[type="text"]:focus,
-    input[type="email"]:focus {
-      outline: none;
-      border-color: var(--accent);
+    /* Override inputs inside the light CTA section */
+    .cta-band input[type="text"],
+    .cta-band input[type="email"] {
+      background: #fff;
+      border-color: #ccc5ba;
+      color: var(--cta-ink);
     }
+    .cta-band input::placeholder { color: #a09890; }
+    .cta-band input:focus        { border-color: var(--accent); }
 
     .form-bottom {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 12px;
-      margin-top: 10px;
+      gap: 14px;
+      margin-top: 12px;
     }
 
-    .cta-note {
-      font-size: 0.84rem;
-      color: var(--soft);
-    }
+    .cta-note { font-size: 0.8rem; color: #9a9088; }
 
     .success-msg {
-      color: var(--ok);
       font-weight: 600;
-      font-size: 0.92rem;
-      min-height: 1.2em;
+      font-size: 0.9rem;
+      min-height: 1.4em;
+      margin-top: 10px;
+      color: var(--ok);
     }
+    .cta-band .success-msg { color: #0a7a4f; }
 
-    /* ─── Footer ───────────────────────────────────────────────── */
+    /* ─── Footer ─────────────────────────────────────────────────── */
     footer {
-      padding: 24px 0 48px;
+      padding: 26px 0 44px;
       color: var(--soft);
-      font-size: 0.88rem;
+      font-size: 0.82rem;
       text-align: center;
       border-top: 1px solid var(--line);
     }
 
-    /* ─── Skeleton loading ─────────────────────────────────────── */
+    /* ─── Skeleton ───────────────────────────────────────────────── */
     .skel {
-      background: linear-gradient(90deg, #e8ecf0 25%, #f0f4f7 50%, #e8ecf0 75%);
+      background: linear-gradient(90deg, var(--surface) 25%, var(--surface-2) 50%, var(--surface) 75%);
       background-size: 200% 100%;
       animation: shimmer 1.4s ease-in-out infinite;
-      border-radius: 8px;
+      border-radius: 4px;
     }
 
     @keyframes shimmer {
-      0% { background-position: 200% 0; }
+      0%   { background-position: 200% 0; }
       100% { background-position: -200% 0; }
+    }
+
+    /* ─── Responsive ─────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .hero     { padding: 64px 0 52px; }
+      .section  { padding: 56px 0; }
+      .cta-band { padding: 64px 0; }
     }
   </style>
 </head>
 <body>
+
+  <div id="scroll-bar"></div>
 
   <!-- Nav -->
   <nav>
@@ -476,30 +500,50 @@
   </nav>
 
   <!-- Hero -->
-  <header class="hero wrap">
-    <div class="hero-eyebrow" id="eyebrow">
-      <span class="dot"></span>
-      <span id="eyebrow-text">Beta · Limited Spots</span>
+  <header class="hero">
+    <div class="hero-glow"></div>
+    <div class="wrap hero-content">
+      <div class="hero-eyebrow" id="eyebrow">
+        <span class="dot"></span>
+        <span id="eyebrow-text">Beta · Limited Spots</span>
+      </div>
+      <h1 id="headline">Turn social posts into sales-page messaging.</h1>
+      <p class="hero-sub" id="subheadline">
+        Paste TikTok, X, YouTube Shorts, and Facebook links. Get a pain-point brief and landing page draft in 10 minutes — written in real customer language.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#waitlist">Get Beta Access</a>
+        <a class="btn btn-ghost" href="#how-it-works">See How It Works</a>
+      </div>
+      <p class="hero-note">Built for fast offer testing and TikTok-first product launches.</p>
     </div>
-    <h1 id="headline">Turn social posts into sales-page messaging.</h1>
-    <p class="hero-sub" id="subheadline">
-      Paste TikTok, X, YouTube Shorts, and Facebook links. Get a pain-point brief and landing page draft in 10 minutes — written in real customer language.
-    </p>
-    <div class="hero-actions">
-      <a class="btn btn-primary" href="#waitlist">Get Beta Access</a>
-      <a class="btn btn-ghost" href="#how-it-works">See How It Works</a>
-    </div>
-    <p class="hero-note">Built for fast offer testing and TikTok-first product launches.</p>
   </header>
 
-  <div class="divider"></div>
+  <!-- Pain-language ticker -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span class="ticker-item">"I've tried every tool out there and nothing sticks"</span>
+      <span class="ticker-item">"Why does writing good copy always take so long?"</span>
+      <span class="ticker-item">"I just want messaging that actually converts"</span>
+      <span class="ticker-item">"This feels like it was built for someone else entirely"</span>
+      <span class="ticker-item">"I spend more time on copy than on my actual product"</span>
+      <span class="ticker-item">"I have no idea how to describe what I do in their words"</span>
+      <!-- Duplicate for seamless loop -->
+      <span class="ticker-item">"I've tried every tool out there and nothing sticks"</span>
+      <span class="ticker-item">"Why does writing good copy always take so long?"</span>
+      <span class="ticker-item">"I just want messaging that actually converts"</span>
+      <span class="ticker-item">"This feels like it was built for someone else entirely"</span>
+      <span class="ticker-item">"I spend more time on copy than on my actual product"</span>
+      <span class="ticker-item">"I have no idea how to describe what I do in their words"</span>
+    </div>
+  </div>
 
-  <!-- Pain Points -->
+  <!-- Pain Points (dynamic, hidden until populated) -->
   <section class="section wrap" id="pain-section" style="display:none;">
     <span class="section-label">From Real Communities</span>
     <h2 class="section-title" id="pain-title">What people in your niche are actually saying</h2>
     <p class="section-sub">Real frustrations, pulled from real social posts — so your copy speaks their exact language.</p>
-    <div class="pain-grid" id="pain-grid"></div>
+    <div class="grid-wrap pain-grid" id="pain-grid"></div>
   </section>
 
   <div class="divider" id="pain-divider" style="display:none;"></div>
@@ -509,19 +553,19 @@
     <span class="section-label">How It Works</span>
     <h2 class="section-title">From social posts to sales copy in three steps</h2>
     <p class="section-sub">No interviews. No assumptions. Just real words from the people you want to reach.</p>
-    <ol class="steps">
+    <ol class="grid-wrap steps">
       <li>
-        <div class="step-num">1</div>
+        <div class="step-num">01</div>
         <h3>Paste your social links</h3>
         <p>Drop in TikTok videos, X threads, YouTube Shorts, or Facebook posts from your target niche.</p>
       </li>
       <li>
-        <div class="step-num">2</div>
+        <div class="step-num">02</div>
         <h3>AI extracts the pain points</h3>
         <p>We scan comments, captions, and replies for the real frustrations and buying triggers your audience expresses.</p>
       </li>
       <li>
-        <div class="step-num">3</div>
+        <div class="step-num">03</div>
         <h3>Get your landing page draft</h3>
         <p>A pain-led headline, subheading, feature copy, and CTA — all written in customer language, ready to edit.</p>
       </li>
@@ -530,10 +574,10 @@
 
   <div class="divider"></div>
 
-  <!-- Problem / Solution -->
+  <!-- Problem / Solution (dynamic) -->
   <section class="section wrap" id="prob-sol-section" style="display:none;">
-    <div class="split">
-      <div class="split-card">
+    <div class="grid-wrap split">
+      <div class="split-card problem">
         <div class="card-label">The Problem</div>
         <h3>Writing from guesswork wastes your time</h3>
         <p id="problem-text">Most landing pages are written from the founder's perspective — not the customer's. You end up testing copy that never converts because it never resonated in the first place.</p>
@@ -548,32 +592,32 @@
 
   <div class="divider" id="prob-divider" style="display:none;"></div>
 
-  <!-- Features -->
+  <!-- Features (dynamic) -->
   <section class="section wrap" id="features-section" style="display:none;">
     <span class="section-label">What You Get</span>
     <h2 class="section-title">Everything to launch your offer fast</h2>
     <p class="section-sub">No fluff — just the output you need to test and ship.</p>
-    <div class="feature-grid" id="feature-grid"></div>
+    <div class="grid-wrap feature-grid" id="feature-grid"></div>
   </section>
 
-  <!-- Static features fallback (shown when no backend data) -->
+  <!-- Static features fallback (shown when backend unavailable) -->
   <section class="section wrap" id="static-features">
     <span class="section-label">What You Get</span>
     <h2 class="section-title">Everything to launch your offer fast</h2>
     <p class="section-sub">No fluff — just the output you need to test and ship.</p>
-    <div class="feature-grid">
+    <div class="grid-wrap feature-grid">
       <div class="feature-card">
-        <div class="feature-icon">🎯</div>
+        <span class="feature-icon">🎯</span>
         <h3>Pain-Point Brief</h3>
         <p>A structured breakdown of the top 5 frustrations and buying triggers from the content you feed in.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon">✍️</div>
+        <span class="feature-icon">✍️</span>
         <h3>Landing Page Draft</h3>
         <p>Headline, subheadline, feature bullets, and CTA — all in one exportable draft ready to paste into your page builder.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon">⚡</div>
+        <span class="feature-icon">⚡</span>
         <h3>10-Minute Turnaround</h3>
         <p>Paste links, wait a few seconds, get your draft. Test a new offer angle in the time it takes to make coffee.</p>
       </div>
@@ -586,9 +630,10 @@
   <section class="section wrap">
     <span class="section-label">Who This Is For</span>
     <h2 class="section-title">Built for fast movers</h2>
-    <div class="split">
+    <p class="section-sub" style="margin-bottom: 32px;">Testing new angles or launching fast? This is for you.</p>
+    <div class="grid-wrap split">
       <div class="split-card">
-        <div class="card-label">Solo agencies & consultants</div>
+        <div class="card-label">Solo agencies &amp; consultants</div>
         <h3>Test new offers without a copywriter</h3>
         <p>Quickly spin up pain-led landing pages for different client niches. Find what resonates before you invest in creative.</p>
       </div>
@@ -600,17 +645,15 @@
     </div>
   </section>
 
-  <div class="divider"></div>
-
-  <!-- Waitlist CTA -->
-  <section class="section wrap" id="waitlist">
-    <div class="cta-section">
+  <!-- Waitlist CTA — LIGHT SECTION (contrast inversion) -->
+  <section class="cta-band" id="waitlist">
+    <div class="wrap">
       <h2 id="cta-headline">Join the Beta — 20 spots available</h2>
       <p class="cta-desc" id="cta-subtext">Free during beta. No credit card required. We'll email you when your spot is ready.</p>
 
       <form id="waitlist-form" novalidate>
         <div class="form-row">
-          <input type="text" id="f-name"  name="name"  placeholder="Your name">
+          <input type="text"  id="f-name"  name="name"  placeholder="Your name">
           <input type="email" id="f-email" name="email" placeholder="Email address" required>
         </div>
         <div class="form-row">
@@ -635,6 +678,12 @@
 
   <script src="config.js"></script>
   <script>
+    // Scroll progress bar
+    window.addEventListener('scroll', () => {
+      const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+      document.getElementById('scroll-bar').style.width = Math.min(pct, 100) + '%';
+    }, { passive: true });
+
     const BACKEND = (typeof CONFIG !== 'undefined' && CONFIG.BACKEND_URL) || '';
     const ICONS   = ['🎯', '⚡', '✍️', '🔍', '📊', '🚀'];
 
@@ -657,12 +706,10 @@
 
     // ── Render dynamic funnel content ─────────────────────────────
     function renderFunnel(d) {
-      // Hero
       document.getElementById('headline').textContent    = d.headline;
       document.getElementById('subheadline').textContent = d.subheadline;
       document.getElementById('eyebrow-text').textContent = 'Built from real community content · Beta';
 
-      // Pain points
       if (d.pain_points && d.pain_points.length) {
         const grid = document.getElementById('pain-grid');
         grid.innerHTML = d.pain_points.map(p => `
@@ -672,7 +719,6 @@
         show('pain-divider');
       }
 
-      // Problem / Solution
       if (d.problem_section || d.solution_section) {
         if (d.problem_section) document.getElementById('problem-text').textContent = d.problem_section;
         if (d.solution_section) document.getElementById('solution-text').textContent = d.solution_section;
@@ -680,12 +726,11 @@
         show('prob-divider');
       }
 
-      // Features
       if (d.features && d.features.length) {
         const grid = document.getElementById('feature-grid');
         grid.innerHTML = d.features.map((f, i) => `
           <div class="feature-card">
-            <div class="feature-icon">${ICONS[i % ICONS.length]}</div>
+            <span class="feature-icon">${ICONS[i % ICONS.length]}</span>
             <h3>${esc(f.title)}</h3>
             <p>${esc(f.description)}</p>
           </div>
@@ -694,13 +739,12 @@
         hide('static-features');
       }
 
-      // CTA
-      if (d.cta)        document.getElementById('submit-btn').textContent   = d.cta;
-      if (d.cta_subtext) document.getElementById('cta-note').textContent    = d.cta_subtext;
+      if (d.cta)        document.getElementById('submit-btn').textContent = d.cta;
+      if (d.cta_subtext) document.getElementById('cta-note').textContent  = d.cta_subtext;
     }
 
     function renderFallback() {
-      // Keep defaults, just ensure form works
+      // Keep default content visible
     }
 
     // ── Lead capture form ─────────────────────────────────────────
@@ -714,7 +758,7 @@
         if (!email) return;
 
         const btn = document.getElementById('submit-btn');
-        btn.disabled   = true;
+        btn.disabled    = true;
         btn.textContent = 'Submitting…';
         status.textContent = '';
 
@@ -723,30 +767,27 @@
             const res = await fetch(backendUrl + '/api/leads', {
               method:  'POST',
               headers: { 'Content-Type': 'application/json' },
-              body:    JSON.stringify({
+              body: JSON.stringify({
                 email: email,
                 name:  document.getElementById('f-name').value.trim()  || null,
                 role:  document.getElementById('f-role').value.trim()  || null,
                 niche: document.getElementById('f-niche').value.trim() || null,
               }),
             });
-
             if (!res.ok) throw new Error();
             status.textContent = '✓ You\'re on the list. We\'ll be in touch soon!';
             form.reset();
           } catch {
-            // fallback to mailto
             mailtoFallback(email);
           }
         } else {
           mailtoFallback(email);
         }
 
-        btn.disabled = false;
+        btn.disabled    = false;
         btn.textContent = document.getElementById('submit-btn').dataset.label || 'Get Early Access';
       });
 
-      // Store original label for reset
       document.getElementById('submit-btn').dataset.label = document.getElementById('submit-btn').textContent;
     }
 
