@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Optional
 from contextlib import asynccontextmanager
 
-import anthropic
+import openai
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
@@ -17,16 +17,16 @@ load_dotenv()
 BASE_DIR = Path(__file__).parent
 DB_PATH = BASE_DIR / "leads.db"
 
-_client: Optional[anthropic.Anthropic] = None
+_client: Optional[openai.OpenAI] = None
 
 
-def get_client() -> anthropic.Anthropic:
+def get_client() -> openai.OpenAI:
     global _client
     if _client is None:
-        api_key = os.getenv("ANTHROPIC_API_KEY")
+        api_key = os.getenv("OPENAI_API_KEY")
         if not api_key:
-            raise HTTPException(500, "ANTHROPIC_API_KEY not set")
-        _client = anthropic.Anthropic(api_key=api_key)
+            raise HTTPException(500, "OPENAI_API_KEY not set")
+        _client = openai.OpenAI(api_key=api_key)
     return _client
 
 
@@ -165,21 +165,15 @@ Return ONLY valid JSON (no markdown fences, no explanation) with this exact stru
 }}"""
 
     client = get_client()
-    message = client.messages.create(
-        model="claude-sonnet-4-6",
+    response = client.chat.completions.create(
+        model="gpt-4o",
         max_tokens=2048,
+        response_format={"type": "json_object"},
         messages=[{"role": "user", "content": prompt}],
     )
 
-    raw = message.content[0].text.strip()
-    # Strip markdown fences if Claude wraps the response
-    if raw.startswith("```"):
-        raw = raw.split("```")[1]
-        if raw.startswith("json"):
-            raw = raw[4:]
-        raw = raw.rsplit("```", 1)[0]
-
-    result = json.loads(raw.strip())
+    raw = response.choices[0].message.content.strip()
+    result = json.loads(raw)
 
     conn = get_db()
     conn.execute(
