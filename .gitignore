@@ -1,0 +1,25 @@
+# Backend
+backend/.env
+backend/leads.db
+backend/__pycache__/
+backend/*.pyc
+backend/.venv/
+backend/venv/
+*.egg-info/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pain-to-Page — Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:     #0f1117;
+      --panel:  #1a1d27;
+      --border: #2a2d3e;
+      --ink:    #e8eaf0;
+      --muted:  #7a7f99;
+      --accent: #d33f2a;
+      --ok:     #22c55e;
+      --warn:   #f59e0b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      padding: 24px 16px;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--accent);
+      margin-bottom: 32px;
+      display: block;
+    }
+
+    .logo em {
+      font-style: normal;
+      color: var(--muted);
+      font-weight: 400;
+      font-size: 0.8rem;
+      display: block;
+    }
+
+    .nav-link {
+      display: block;
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      margin-bottom: 2px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background: rgba(255,255,255,0.06);
+      color: var(--ink);
+    }
+
+    /* Main */
+    .main {
+      padding: 32px 40px;
+      max-width: 900px;
+    }
+
+    h1 { font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; }
+    h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 16px; }
+    .page-desc { color: var(--muted); margin-bottom: 28px; }
+
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.9rem;
+      transition: border-color 0.15s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    textarea { resize: vertical; min-height: 120px; }
+
+    .field { margin-bottom: 16px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: none;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .btn:hover { opacity: 0.85; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-ghost {
+      background: rgba(255,255,255,0.06);
+      color: var(--ink);
+      border: 1px solid var(--border);
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    /* Source list */
+    #source-list { margin-bottom: 16px; }
+
+    .source-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+    }
+
+    .source-meta { flex: 1; min-width: 0; }
+    .source-platform {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .source-url {
+      font-size: 0.8rem;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .source-preview {
+      font-size: 0.82rem;
+      color: var(--ink);
+      margin-top: 4px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .remove-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 1.1rem;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+    .remove-btn:hover { color: #f87171; }
+
+    /* Status bar */
+    .status-bar {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      margin-bottom: 16px;
+      display: none;
+    }
+    .status-bar.show { display: block; }
+    .status-bar.ok { background: rgba(34, 197, 94, 0.1); color: var(--ok); border: 1px solid rgba(34, 197, 94, 0.2); }
+    .status-bar.err { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); }
+    .status-bar.loading { background: rgba(245, 158, 11, 0.1); color: var(--warn); border: 1px solid rgba(245, 158, 11, 0.2); }
+
+    /* Funnel preview */
+    .preview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .preview-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .preview-card .card-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .preview-card p, .preview-card li {
+      font-size: 0.88rem;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .pain-tag {
+      display: inline-block;
+      background: rgba(211, 63, 42, 0.12);
+      color: #ff7a6b;
+      border: 1px solid rgba(211, 63, 42, 0.2);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.8rem;
+      margin: 3px 3px 3px 0;
+    }
+
+    /* Leads table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      text-align: left;
+      padding: 8px 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 10px 12px;
+      font-size: 0.88rem;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .empty-state {
+      text-align: center;
+      padding: 32px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 99px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(34, 197, 94, 0.1);
+      color: var(--ok);
+    }
+
+    .tab-row {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 24px;
+    }
+
+    .tab {
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: none;
+      color: var(--muted);
+      font: inherit;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .tab.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <span class="logo">Pain-to-Page <em>Admin</em></span>
+      <a class="nav-link active" onclick="showTab('generate')">Generate Funnel</a>
+      <a class="nav-link" onclick="showTab('leads')">Leads</a>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <h1>Pain-to-Page Admin</h1>
+      <p class="page-desc">Paste social media content → generate funnel copy → collect leads.</p>
+
+      <!-- Generate tab -->
+      <div class="tab-panel active" id="tab-generate">
+
+        <!-- Add Source -->
+        <div class="section">
+          <h2>Add Social Media Source</h2>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
+            <div class="field" style="margin:0">
+              <label>Platform</label>
+              <select id="src-platform">
+                <option value="tiktok">TikTok</option>
+                <option value="x">X / Twitter</option>
+                <option value="youtube">YouTube Shorts</option>
+                <option value="facebook">Facebook</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="field" style="margin:0">
+              <label>URL (optional)</label>
+              <input id="src-url" type="url" placeholder="https://...">
+            </div>
+          </div>
+          <div class="field">
+            <label>Paste content — comments, captions, posts, replies</label>
+            <textarea id="src-text" placeholder="Paste the text from the page here. Longer = better results."></textarea>
+          </div>
+          <button class="btn btn-ghost" onclick="addSource()">+ Add Source</button>
+        </div>
+
+        <!-- Source list -->
+        <div id="source-list"></div>
+
+        <!-- Generate button + status -->
+        <div id="generate-status" class="status-bar"></div>
+        <button class="btn btn-primary" id="generate-btn" onclick="generateFunnel()" style="margin-bottom:24px;">
+          ✦ Generate Funnel Copy
+        </button>
+
+        <!-- Funnel preview -->
+        <div class="section" id="preview-section" style="display:none;">
+          <h2>Generated Funnel</h2>
+          <div id="funnel-preview"></div>
+        </div>
+      </div>
+
+      <!-- Leads tab -->
+      <div class="tab-panel" id="tab-leads">
+        <div class="section">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <h2 style="margin:0;">Leads <span class="badge" id="lead-count">—</span></h2>
+            <button class="btn btn-ghost" onclick="loadLeads()">↻ Refresh</button>
+          </div>
+          <div id="leads-table-wrap">
+            <div class="empty-state">Loading leads…</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const sources = [];
+
+    function showTab(name) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      document.getElementById('tab-' + name).classList.add('active');
+      event.target.classList.add('active');
+      if (name === 'leads') loadLeads();
+    }
+
+    function addSource() {
+      const platform = document.getElementById('src-platform').value;
+      const url      = document.getElementById('src-url').value.trim();
+      const text     = document.getElementById('src-text').value.trim();
+
+      if (!text) { alert('Paste some content first.'); return; }
+
+      sources.push({ platform, url, text });
+      document.getElementById('src-url').value  = '';
+      document.getElementById('src-text').value = '';
+      renderSources();
+    }
+
+    function removeSource(i) {
+      sources.splice(i, 1);
+      renderSources();
+    }
+
+    function renderSources() {
+      const el = document.getElementById('source-list');
+      if (!sources.length) { el.innerHTML = ''; return; }
+      el.innerHTML = sources.map((s, i) => `
+        <div class="source-item">
+          <div class="source-meta">
+            <div class="source-platform">${s.platform}</div>
+            ${s.url ? `<div class="source-url">${s.url}</div>` : ''}
+            <div class="source-preview">${escHtml(s.text)}</div>
+          </div>
+          <button class="remove-btn" onclick="removeSource(${i})">✕</button>
+        </div>
+      `).join('');
+    }
+
+    async function generateFunnel() {
+      if (!sources.length) { alert('Add at least one source first.'); return; }
+
+      const btn = document.getElementById('generate-btn');
+      const status = document.getElementById('generate-status');
+      btn.disabled = true;
+      showStatus(status, 'loading', '⏳ Analyzing content with Claude… this takes ~10 seconds');
+
+      try {
+        const res = await fetch('/api/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sources }),
+        });
+
+        if (!res.ok) throw new Error(await res.text());
+        const data = await res.json();
+        showStatus(status, 'ok', '✓ Funnel generated successfully!');
+        renderPreview(data);
+      } catch (err) {
+        showStatus(status, 'err', '✕ Error: ' + err.message);
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    function renderPreview(d) {
+      const section = document.getElementById('preview-section');
+      const preview = document.getElementById('funnel-preview');
+      section.style.display = 'block';
+
+      preview.innerHTML = `
+        <div class="preview-grid">
+          <div class="preview-card" style="grid-column:1/-1">
+            <div class="card-label">Headline</div>
+            <p style="font-size:1.1rem; font-weight:700;">${escHtml(d.headline)}</p>
+            <p style="color:var(--muted); margin-top:6px;">${escHtml(d.subheadline)}</p>
+          </div>
+          <div class="preview-card">
+            <div class="card-label">Pain Points Extracted</div>
+            <div>${d.pain_points.map(p => `<span class="pain-tag">${escHtml(p)}</span>`).join('')}</div>
+          </div>
+          <div class="preview-card">
+            <div class="card-label">CTA</div>
+            <p style="font-weight:700; color:var(--accent);">${escHtml(d.cta)}</p>
+            <p style="color:var(--muted); font-size:0.82rem; margin-top:4px;">${escHtml(d.cta_subtext)}</p>
+          </div>
+          <div class="preview-card">
+            <div class="card-label">Problem</div>
+            <p>${escHtml(d.problem_section)}</p>
+          </div>
+          <div class="preview-card">
+            <div class="card-label">Solution</div>
+            <p>${escHtml(d.solution_section)}</p>
+          </div>
+          <div class="preview-card" style="grid-column:1/-1">
+            <div class="card-label">Features</div>
+            <ul style="list-style:none; padding:0; display:grid; grid-template-columns:repeat(3,1fr); gap:10px;">
+              ${d.features.map(f => `
+                <li style="background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:8px; padding:10px;">
+                  <strong style="display:block; margin-bottom:4px;">${escHtml(f.title)}</strong>
+                  ${escHtml(f.description)}
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+        </div>
+        <p style="color:var(--muted); font-size:0.82rem;">
+          The public funnel page will now show this content automatically.
+        </p>
+      `;
+
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    async function loadLeads() {
+      const wrap = document.getElementById('leads-table-wrap');
+      try {
+        const res = await fetch('/api/leads');
+        const leads = await res.json();
+        document.getElementById('lead-count').textContent = leads.length;
+
+        if (!leads.length) {
+          wrap.innerHTML = '<div class="empty-state">No leads yet. Share your funnel page to collect them.</div>';
+          return;
+        }
+
+        wrap.innerHTML = `
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Niche</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${leads.map((l, i) => `
+                <tr>
+                  <td style="color:var(--muted)">${i + 1}</td>
+                  <td>${escHtml(l.email)}</td>
+                  <td>${escHtml(l.name || '—')}</td>
+                  <td>${escHtml(l.role || '—')}</td>
+                  <td>${escHtml(l.niche || '—')}</td>
+                  <td style="color:var(--muted); font-size:0.8rem;">${new Date(l.created_at).toLocaleDateString()}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+      } catch (err) {
+        wrap.innerHTML = `<div class="empty-state">Failed to load leads: ${err.message}</div>`;
+      }
+    }
+
+    function showStatus(el, type, msg) {
+      el.className = 'status-bar show ' + type;
+      el.textContent = msg;
+    }
+
+    function escHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // Load existing funnel on mount
+    fetch('/api/funnel')
+      .then(r => r.json())
+      .then(d => { if (d) renderPreview(d); })
+      .catch(() => {});
+  </script>
+</body>
+</html>
